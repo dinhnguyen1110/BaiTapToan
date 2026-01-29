@@ -26,23 +26,23 @@ const AppConfig = {
                         {
                             id: 101,
                             difficulty: "basic",
-                            question: "Cho $AB=16$ cm, $CD=3$ dm. Tính tỉ số $\\frac{AB}{CD}$",
+                            question: "Cho $AB=16$ cm, $CD=3$ dm. Tính tỉ số $\\frac{AB}{CD}$.",
                             options: [
                                 { text: "$\\frac{AB}{CD}=\\frac{3}{16}$", correct: false },
                                 { text: "$\\frac{AB}{CD}=\\frac{15}{8}$", correct: false },
                                 { text: "$\\frac{AB}{CD}=\\frac{8}{15}$", correct: true },
                                 { text: "$\\frac{AB}{CD}=\\frac{16}{3}$", correct: false }
                             ],
-                            hint: "Đổi về cùng đơn vị đo trước khi lập tỉ số. $3$ dm = ? cm",
-                            rationale: "Ta có $AB=16$ cm, $CD=3\\text{ dm}=30$ cm.<br>Do đó $\\frac{AB}{CD}=\\frac{16}{30}=\\frac{8}{15}$."
+                            rationale: "Ta có $AB=16$ cm, $CD=3$ dm $=30$ cm. Do đó $\\frac{AB}{CD}=\\frac{16}{30}=\\frac{8}{15}$."
                         },
                         {
                             id: 102,
                             difficulty: "basic",
-                            question: `<div class="flex flex-col md:flex-row items-center gap-4">
-                                <div class="text-sm">
+                            question: `<div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex-1">Cho hình vẽ biết $AB \\parallel DE$, phát biểu nào sau đây <strong>đúng</strong>?</div>
+                                <div class="text-sm flex justify-center md:justify-end">
                                     <script type="text/tikz">
-                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=0.8]
+                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=1]
                                             \\tikzset{declare function={a=3.5;b=2.5;c=2;}}
                                             \\pgfmathsetmacro{\\goc}{acos((a*a+c*c-b*b)/(2*a*c))}
                                             \\draw (0,0)coordinate (D)--+(0:a)coordinate (E)--+(\\goc:c)coordinate (C)--cycle
@@ -53,7 +53,6 @@ const AppConfig = {
                                         \\end{tikzpicture}
                                     </script>
                                 </div>
-                                <div class="flex-1">Cho hình vẽ biết $AB \\parallel DE$, phát biểu nào sau đây <strong>đúng</strong>?</div>
                             </div>`,
                             options: [
                                 { text: "$\\frac{AC}{CD}=\\frac{BC}{CE}$", correct: false },
@@ -61,16 +60,16 @@ const AppConfig = {
                                 { text: "$\\frac{AC}{CE}=\\frac{BC}{CD}$", correct: true },
                                 { text: "$\\frac{AC}{BC}=\\frac{CD}{CE}$", correct: false }
                             ],
-                            hint: "Định lý Ta-lét: Nếu một đường thẳng song song với một cạnh của tam giác... thì nó định ra trên hai cạnh kia những đoạn thẳng tương ứng tỉ lệ.",
                             rationale: "Vì $AB \\parallel DE$ nên áp dụng định lí Ta-lét ta có $\\frac{AC}{CE}=\\frac{BC}{CD}$."
                         },
                         {
                             id: 103,
                             difficulty: "basic",
-                            question: `<div class="flex flex-col md:flex-row items-center gap-4">
-                                <div class="text-sm">
-                                     <script type="text/tikz">
-                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=0.8]
+                            question: `<div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex-1">Cho hình vẽ, biết $BC \\parallel DE$. Hãy chỉ ra tỉ số <strong>sai</strong>.</div>
+                                <div class="text-sm flex justify-center md:justify-end">
+                                    <script type="text/tikz">
+                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=1]
                                             \\tikzset{declare function={a=3;b=2.2;c=2.5;}}
                                             \\pgfmathsetmacro{\\goc}{acos((a*a+c*c-b*b)/(2*a*c))}
                                             \\draw (0,0)coordinate (B)--+(0:a)coordinate (C)--+(\\goc:c)coordinate (A)--cycle
@@ -81,7 +80,6 @@ const AppConfig = {
                                         \\end{tikzpicture}
                                     </script>
                                 </div>
-                                <div class="flex-1">Cho hình vẽ, biết $BC \\parallel DE$. Hãy chỉ ra tỉ số <strong>sai</strong>.</div>
                             </div>`,
                             options: [
                                 { text: "$\\frac{AD}{DC}=\\frac{AE}{AB}$", correct: true },
@@ -89,8 +87,7 @@ const AppConfig = {
                                 { text: "$\\frac{AD}{AC}=\\frac{AE}{AB}$", correct: false },
                                 { text: "$\\frac{CD}{AC}=\\frac{EB}{AB}$", correct: false }
                             ],
-                            hint: "Kiểm tra từng tỉ số dựa trên Định lý Ta-lét.",
-                            rationale: "Vì $BC \\parallel DE$ nên:<br> $\\frac{AD}{CD}=\\frac{AE}{BE}$ (Đúng)<br>$\\frac{AD}{AC}=\\frac{AE}{AB}$ (Đúng)<br>$\\frac{CD}{AC}=\\frac{EB}{AB}$ (Đúng).<br>Hệ thức $\\frac{AD}{DC}=\\frac{AE}{AB}$ là SAI vì vế phải mẫu số là cạnh lớn AB trong khi vế trái mẫu số là đoạn nhỏ DC."
+                            rationale: "Vì $BC \\parallel DE$ nên áp dụng định lí Ta-lét ta có $\\frac{AD}{CD}=\\frac{AE}{BE}$, $\\frac{AD}{AC}=\\frac{AE}{AB}$, $\\frac{CD}{AC}=\\frac{EB}{AB}$.<br>Do đó hệ thức $\\frac{AD}{DC}=\\frac{AE}{AB}$ sai."
                         },
                         {
                             id: 104,
@@ -102,8 +99,7 @@ const AppConfig = {
                                 { text: "$EF=\\frac{2}{25}$ cm", correct: false },
                                 { text: "$EF=\\frac{1}{8}$ cm", correct: false }
                             ],
-                            hint: "Thay số vào tỉ lệ thức $\\frac{EF}{10} = \\frac{4}{5}$ và tìm $EF$.",
-                            rationale: "Ta có $\\frac{EF}{GH}=\\frac{4}{5}$ và $GH=10$ cm.<br>Suy ra $\\frac{EF}{10}=\\frac{4}{5} \\Rightarrow EF=\\frac{10 \\cdot 4}{5}=8$ cm."
+                            rationale: "Ta có $\\frac{EF}{GH}=\\frac{4}{5}$ và $GH=10$ cm, suy ra $\\frac{EF}{10}=\\frac{4}{5} \\Rightarrow EF=\\frac{10 \\cdot 4}{5}=8$ cm."
                         },
                         {
                             id: 105,
@@ -115,52 +111,51 @@ const AppConfig = {
                                 { text: "$AB=240$ cm", correct: false },
                                 { text: "$AB=20$ cm", correct: false }
                             ],
-                            hint: "Nhân chéo: $AB = \\frac{1}{4} \\cdot AC$.",
-                            rationale: "Ta có $\\frac{AB}{AC}=\\frac{1}{4}$ và $AC=60$ cm.<br>Nên $AB = 60 \\cdot \\frac{1}{4} = 15$ cm."
+                            rationale: "Ta có $\\frac{AB}{AC}=\\frac{1}{4}$ và $AC=60$ cm, nên $\\frac{AB}{60}=\\frac{1}{4} \\Rightarrow AB=\\frac{60 \\cdot 1}{4}=15$ cm."
                         },
                         {
                             id: 106,
                             difficulty: "basic",
-                            question: "Cho các đoạn thẳng $AB=6$ cm, $CD=9$ cm, $PQ=8$ cm, $EF=12$ cm. Hãy chọn phát biểu đúng.",
+                            question: "Cho các đoạn thẳng $AB=6$ cm, $CD=9$ cm, $PQ=8$ cm, $EF=12$ cm. Hãy chọn phát biểu đúng trong các phát biểu sau.",
                             options: [
-                                { text: "Đoạn thẳng $AB$ và $PQ$ tỷ lệ với $CD$ và $EF$", correct: true },
-                                { text: "Đoạn thẳng $AB$ và $CD$ tỷ lệ với $EF$ và $PQ$", correct: false },
-                                { text: "Đoạn thẳng $AB$ và $PQ$ tỷ lệ với $EF$ và $CD$", correct: false },
-                                { text: "Đoạn thẳng $PQ$ và $AB$ tỷ lệ với $CD$ và $EF$", correct: false }
+                                { text: "Đoạn thẳng $AB$ và $PQ$ tỷ lệ với hai đoạn thẳng $CD$ và $EF$", correct: true },
+                                { text: "Đoạn thẳng $AB$ và $CD$ tỷ lệ với hai đoạn thẳng $EF$ và $PQ$", correct: false },
+                                { text: "Đoạn thẳng $AB$ và $PQ$ tỷ lệ với hai đoạn thẳng $EF$ và $CD$", correct: false },
+                                { text: "Đoạn thẳng $PQ$ và $AB$ tỷ lệ với hai đoạn thẳng $CD$ và $EF$", correct: false }
                             ],
-                            hint: "Lập các tỉ số $\\frac{AB}{PQ}$ và $\\frac{CD}{EF}$ xem có bằng nhau không.",
-                            rationale: "Ta có $\\frac{AB}{PQ}=\\frac{6}{8}=\\frac{3}{4}$ và $\\frac{CD}{EF}=\\frac{9}{12}=\\frac{3}{4}$.<br>Suy ra $\\frac{AB}{PQ}=\\frac{CD}{EF}$."
+                            rationale: "Ta có $\\frac{AB}{PQ}=\\frac{6}{8}=\\frac{3}{4}$, $\\frac{CD}{EF}=\\frac{9}{12}=\\frac{3}{4}$.<br>Suy ra $\\frac{AB}{PQ}=\\frac{CD}{EF}$.<br>Vậy đoạn thẳng $AB$ và $PQ$ tỷ lệ với hai đoạn thẳng $CD$ và $EF$."
                         },
                         {
                             id: 107,
-                            difficulty: "advanced",
-                            question: "Cho $AB=6$ cm, $CD=8$ cm, $MN=12$ cm, $PQ=x$. Tìm $x$ để $AB$ và $CD$ tỷ lệ với $MN$ và $PQ$.",
+                            difficulty: "basic",
+                            question: "Cho các đoạn thẳng $AB=6$ cm, $CD=8$ cm, $MN=12$ cm, $PQ=x$. Tìm $x$ để $AB$ và $CD$ tỷ lệ với $MN$ và $PQ$.",
                             options: [
                                 { text: "$x=16$ cm", correct: true },
                                 { text: "$x=9$ cm", correct: false },
                                 { text: "$x=4$ cm", correct: false },
                                 { text: "$x=20$ cm", correct: false }
                             ],
-                            hint: "Lập tỉ lệ thức: $\\frac{AB}{CD} = \\frac{MN}{PQ}$.",
-                            rationale: "Ta có $\\frac{AB}{CD}=\\frac{MN}{PQ} \\Rightarrow \\frac{6}{8}=\\frac{12}{x} \\Rightarrow x=\\frac{8 \\cdot 12}{6}=16$ cm."
+                            rationale: "Để $AB$ và $CD$ tỷ lệ với $MN$ và $PQ$ ta có $\\frac{AB}{CD}=\\frac{MN}{PQ} \\Rightarrow \\frac{6}{8}=\\frac{12}{x} \\Rightarrow x=\\frac{8 \\cdot 12}{6}=16$ cm."
                         },
                         {
                             id: 108,
                             difficulty: "advanced",
-                            question: `<div class="flex flex-col md:flex-row items-center gap-4">
-                                <div class="text-sm">
+                            question: `<div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex-1">Tìm giá trị của $x$ trong hình vẽ biết $MN \\parallel BC$.</div>
+                                <div class="text-sm flex justify-center md:justify-end">
                                     <script type="text/tikz">
-                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=0.8]
+                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=1]
                                             \\tikzset{declare function={a=3;b=2.2;c=2.5;}}
                                             \\pgfmathsetmacro{\\goc}{acos((a*a+c*c-b*b)/(2*a*c))}
                                             \\draw (0,0)coordinate (B)--+(0:a)coordinate (C)--+(\\goc:c)coordinate (A)--cycle
                                             ($(A)!2/3!(C)$)coordinate (N)--($(A)!2/3!(B)$)coordinate (M);
                                             \\path (A)--(M)node[midway,left,scale=.8]{$12$} (B)--(M)node[midway,left,scale=.8]{$6$} (A)--(N)node[midway,right,scale=.8]{$15$} (C)--(N)node[midway,right,scale=.8]{$x$};
-                                            \\foreach \\point/\\goc in {A/90,B/190,C/-10,N/10,M/135}{\\draw[fill=black](\\point)circle(.8pt)+(\\goc:2mm)node[scale=.8]{$\\point$};}
+                                            \\foreach \\point/\\goc in {A/90,B/190,C/-10,N/10,M/135}{
+                                                \\draw[fill=black](\\point)circle(.8pt)+(\\goc:2mm)node[scale=.8]{$\\point$};
+                                            }
                                         \\end{tikzpicture}
                                     </script>
                                 </div>
-                                <div class="flex-1">Tìm giá trị của $x$ trong hình vẽ biết $MN \\parallel BC$.</div>
                             </div>`,
                             options: [
                                 { text: "$x=30$", correct: false },
@@ -168,28 +163,30 @@ const AppConfig = {
                                 { text: "$x=4,8$", correct: false },
                                 { text: "$x=20$", correct: false }
                             ],
-                            hint: "Định lý Ta-lét: $\\frac{AM}{MB} = \\frac{AN}{NC}$. Chú ý đề bài cho đoạn nào tương ứng.",
-                            rationale: "Vì $MN \\parallel BC$ nên $\\frac{AM}{BM}=\\frac{AN}{NC} \\Rightarrow \\frac{12}{6}=\\frac{15}{x} \\Rightarrow x=\\frac{6 \\cdot 15}{12}=7,5$." // Note: Fixed logic, diagram usually implies NC is x
+                            rationale: "Vì $MN \\parallel BC$ (giả thiết) nên theo định lý Ta-lét ta có $\\frac{AM}{BM}=\\frac{AN}{AC} \\Rightarrow \\frac{12}{6}=\\frac{15}{x} \\Rightarrow x=\\frac{6 \\cdot 15}{12}=7,5$."
                         },
                         {
                             id: 109,
                             difficulty: "advanced",
-                            question: `<div class="flex flex-col md:flex-row items-center gap-4">
-                                <div class="text-sm">
+                            question: `<div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex-1">Tính độ dài $NC$ trong hình vẽ biết $MN \\parallel BC$.</div>
+                                <div class="text-sm flex justify-center md:justify-end">
                                     <script type="text/tikz">
-                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=0.8]
+                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=1]
                                             \\tikzset{declare function={a=3;b=2.5;c=2;}}
                                             \\pgfmathsetmacro{\\goc}{acos((a*a+c*c-b*b)/(2*a*c))}
                                             \\draw (0,0)coordinate (B)--+(0:a)coordinate (C)--+(\\goc:c)coordinate (A)--cycle
                                             ($(A)!.6!(C)$)coordinate (N)--($(A)!.6!(B)$)coordinate (M)
-                                            ($(A)+(50:.3)$)coordinate (p) ($(C)+(p)-(A)$)coordinate (q);
+                                            ($(A)+(50:.3)$)coordinate (p) 
+                                            ($(C)+(p)-(A)$)coordinate (q);
                                             \\path (A)--(M)node[midway,left,scale=.8]{$9$} (B)--(M)node[midway,left,scale=.8]{$6$};
                                             \\draw[<->](p)--(q)node[midway,right,scale=.8]{$25$};
-                                            \\foreach \\point/\\goc in {A/90,B/190,C/-10,N/10,M/135}{\\draw[fill=black](\\point)circle(.8pt)+(\\goc:2mm)node[scale=.8]{$\\point$};}
+                                            \\foreach \\point/\\goc in {A/90,B/190,C/-10,N/10,M/135}{
+                                                \\draw[fill=black](\\point)circle(.8pt)+(\\goc:2mm)node[scale=.8]{$\\point$};
+                                            }
                                         \\end{tikzpicture}
                                     </script>
                                 </div>
-                                <div class="flex-1">Tính độ dài $NC$ biết $MN \\parallel BC$.</div>
                             </div>`,
                             options: [
                                 { text: "$NC=30$", correct: false },
@@ -197,16 +194,28 @@ const AppConfig = {
                                 { text: "$NC=40$", correct: false },
                                 { text: "$NC=10$", correct: true }
                             ],
-                            hint: "Tính tỉ số $\\frac{MB}{AB}$ hoặc tương tự.",
-                            rationale: "Ta có $AB = AM + MB = 9 + 6 = 15$.<br>Do $MN \\parallel BC$ nên $\\frac{MB}{AB}=\\frac{NC}{AC} \\Rightarrow \\frac{6}{15}=\\frac{NC}{25} \\Rightarrow NC=\\frac{6 \\cdot 25}{15}=10$."
+                            rationale: "Vì $MN \\parallel BC$ (giả thiết) nên theo định lý Ta-lét ta có $\\frac{MB}{AB}=\\frac{NC}{AC} \\Rightarrow \\frac{6}{6+9}=\\frac{NC}{25} \\Rightarrow \\frac{6}{15}=\\frac{NC}{25} \\Rightarrow NC=\\frac{6 \\cdot 25}{15}=10$."
                         },
                         {
                             id: 110,
+                            difficulty: "basic",
+                            question: "Cho biết độ dài của $AB$ gấp $7$ lần độ dài của $CD$ và độ dài của $A'B'$ gấp $12$ lần độ dài của $CD$. Tính tỉ số của hai đoạn thẳng $AB$ và $A'B'$.",
+                            options: [
+                                { text: "$\\frac{AB}{A'B'}=\\frac{1}{12}$", correct: false },
+                                { text: "$\\frac{AB}{A'B'}=\\frac{1}{7}$", correct: false },
+                                { text: "$\\frac{AB}{A'B'}=\\frac{7}{12}$", correct: true },
+                                { text: "$\\frac{AB}{A'B'}=\\frac{12}{7}$", correct: false }
+                            ],
+                            rationale: "Ta có $AB=7CD$, $A'B'=12CD$.<br>Suy ra $\\frac{AB}{A'B'}=\\frac{7CD}{12CD}=\\frac{7}{12}$."
+                        },
+                        {
+                            id: 111,
                             difficulty: "advanced",
-                            question: `<div class="flex flex-col md:flex-row items-center gap-4">
-                                <div class="text-sm">
+                            question: `<div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex-1">Cho hình thang $ABCD$ ($AB \\parallel CD$) có $BC=18$ cm. Lấy điểm $E$ thuộc cạnh $AD$ sao cho $\\frac{AE}{AD}=\\frac{1}{3}$. Qua $E$ kẻ đường thẳng song song với $CD$ cắt $BC$ tại $F$. Tính độ dài $BF$.</div>
+                                <div class="text-sm flex justify-center md:justify-end">
                                     <script type="text/tikz">
-                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=0.8]
+                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=1]
                                             \\tikzset{declare function={a=5;b=4;c=3;}}
                                             \\pgfmathsetmacro{\\goc}{acos((a*a+c*c-b*b)/(2*a*c))}
                                             \\path (0,0)coordinate (D)+(0:a)coordinate (C)+(\\goc:c)coordinate (A)
@@ -214,12 +223,15 @@ const AppConfig = {
                                             ($(A)!.5!(b)$)coordinate (B)
                                             ($(A)!1/3!(D)$)coordinate (E) ($(B)!1/3!(C)$)coordinate (F)
                                             (intersection of A--C and E--F)coordinate (G);
-                                            \\foreach \\pointo/\\pointt in {A/B,B/C,C/D,D/A,E/F,A/C}{\\draw[fill=black](\\pointo)--(\\pointt);}
-                                            \\foreach \\point/\\goc in {A/110,B/80,F/30,C/-10,D/190,E/135,G/60}{\\draw[fill=black](\\point)circle(.8pt)+(\\goc:2mm)node[scale=.8]{$\\point$};}
+                                            \\foreach \\pointo/\\pointt in {A/B,B/C,C/D,D/A,E/F,A/C}{
+                                                \\draw[fill=black](\\pointo)--(\\pointt);
+                                            }
+                                            \\foreach \\point/\\goc in {A/110,B/80,F/30,C/-10,D/190,E/135,G/60}{
+                                                \\draw[fill=black](\\point)circle(.8pt)+(\\goc:2mm)node[scale=.8]{$\\point$};
+                                            }
                                         \\end{tikzpicture}
                                     </script>
                                 </div>
-                                <div class="flex-1">Hình thang $ABCD$ ($AB \\parallel CD$), $BC=18$. $E \\in AD$ sao cho $\\frac{AE}{AD}=\\frac{1}{3}$. Qua $E$ kẻ song song $CD$ cắt $BC$ tại $F$. Tính $BF$.</div>
                             </div>`,
                             options: [
                                 { text: "$BF=18$ cm", correct: false },
@@ -227,37 +239,47 @@ const AppConfig = {
                                 { text: "$BF=6$ cm", correct: true },
                                 { text: "$BF=54$ cm", correct: false }
                             ],
-                            hint: "Sử dụng tính chất đường thẳng song song cắt hai cạnh bên hình thang (Định lý Ta-lét mở rộng).",
-                            rationale: "Vì $EF \\parallel AB \\parallel CD$ nên $\\frac{AE}{AD} = \\frac{BF}{BC}$.<br>$\\Rightarrow \\frac{1}{3} = \\frac{BF}{18} \\Rightarrow BF = 6$ cm."
+                            rationale: "Xét tam giác $ACD$ có $EG \\parallel CD$ (vì $EF \\parallel CD$). Áp dụng định lý Ta-lét ta có $\\frac{AE}{AD}=\\frac{AG}{AC}$ (1).<br>Xét tam giác $ABC$ có $GF \\parallel AB$ (vì $EF \\parallel CD \\Rightarrow EF \\parallel AB$). Áp dụng định lý Ta-lét ta có $\\frac{BF}{BC}=\\frac{AG}{AC}$ (2).<br>Từ (1) và (2) suy ra $\\frac{AE}{AD}=\\frac{BF}{BC} \\Rightarrow \\frac{1}{3}=\\frac{BF}{18} \\Rightarrow BF=6$ cm."
                         },
                         {
-                            id: 111,
+                            id: 112,
                             difficulty: "advanced",
-                            question: `<div class="flex flex-col md:flex-row items-center gap-4">
-                                <div class="text-sm">
+                            question: `<div class="flex flex-col md:flex-row gap-4">
+                                <div class="flex-1">Cho hình vẽ, biết $BD \\perp AC$, $AE \\perp AC$, $BC=6$, $AB=x$, $CD=3x$, $CE=13,5$. Tính $x$.</div>
+                                <div class="text-sm flex justify-center md:justify-end">
                                     <script type="text/tikz">
-                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=0.8]
+                                        \\begin{tikzpicture}[>=stealth,line join=round,line cap=round,font=\\footnotesize,scale=1]
                                             \\tikzset{declare function={a=4;b=3;}}
-                                            \\path (0,0)coordinate (A)+(0:a)coordinate (E) +(90:b)coordinate (C) ($(A)!1/3!(C)$)coordinate (B)($(E)!1/3!(C)$)coordinate (D)
-                                            pic[draw,angle radius=1mm]{right angle=E--A--C} pic[draw,angle radius=1mm]{right angle=D--B--C}
-                                            ($(C)+(50:.35)$)coordinate (p) ($(p)+(E)-(C)$)coordinate (q);
-                                            \\foreach \\pointo/\\pointt in {A/C,A/E,B/D,C/E}{\\draw[fill=black](\\pointo)--(\\pointt);}
+                                            \\path 
+                                            (0,0)coordinate (A)+(0:a)coordinate (E)
+                                            +(90:b)coordinate (C)
+                                            ($(A)!1/3!(C)$)coordinate (B)($(E)!1/3!(C)$)coordinate (D)
+                                            pic[draw,angle radius=1mm]{right angle=E--A--C}
+                                            pic[draw,angle radius=1mm]{right angle=D--B--C}
+                                            ($(C)+(50:.35)$)coordinate (p)
+                                            ($(p)+(E)-(C)$)coordinate (q);
+                                            \\foreach \\pointo/\\pointt in {A/C,A/E,B/D,C/E}{
+                                                \\draw[fill=black](\\pointo)--(\\pointt);
+                                            }
                                             \\draw[<->](p)--(q)node[midway,right,scale=.8]{$13,5$};
-                                            \\path (B)--(C)node[midway,left,scale=.8]{$6$} (B)--(A)node[midway,left,scale=.8]{$x$} (D)--(C)node[midway,right,scale=.8]{$3x$};
-                                            \\foreach \\point/\\goc in {A/-90,B/180,C/100,D/45,E/-20}{\\draw[fill=black](\\point)circle(.8pt)+(\\goc:2mm)node[scale=.8]{$\\point$};}
+                                            \\path 
+                                            (B)--(C)node[midway,left,scale=.8]{$6$}
+                                            (B)--(A)node[midway,left,scale=.8]{$x$}
+                                            (D)--(C)node[midway,right,scale=.8]{$3x$};
+                                            \\foreach \\point/\\goc in {A/-90,B/180,C/100,D/45,E/-20}{
+                                                \\draw[fill=black](\\point)circle(.8pt)+(\\goc:2mm)node[scale=.8]{$\\point$};
+                                            }
                                         \\end{tikzpicture}
                                     </script>
                                 </div>
-                                <div class="flex-1">Biết $BD \\perp AC$, $AE \\perp AC$, $BC=6, AB=x, CD=3x, CE=13,5$. Tính $x$.</div>
                             </div>`,
                             options: [
-                                { text: "$x=2.5$", correct: false },
+                                { text: "$x=2,5$", correct: false },
                                 { text: "$x=3$", correct: true },
                                 { text: "$x=9$", correct: false },
                                 { text: "$x=4$", correct: false }
                             ],
-                            hint: "Chứng minh $BD \\parallel AE$ rồi dùng Ta-lét.",
-                            rationale: "Vì cũng vuông góc với $AC$ nên $BD \\parallel AE$.<br>Ta có $\\frac{BC}{AC}=\\frac{DC}{CE} \\Rightarrow \\frac{6}{6+x}=\\frac{3x}{13,5}$.<br>Giải phương trình: $6 \\cdot 13,5 = 3x(6+x) \\Rightarrow 81 = 18x + 3x^2 \\Rightarrow x^2+6x-27=0$.<br>Nghiệm dương $x=3$."
+                            rationale: "Vì $BD \\perp AC$, $AE \\perp AC$ nên $BD \\parallel AE$.<br>Áp dụng định lí Ta-lét ta có $\\frac{BC}{AC}=\\frac{DC}{CE} \\Rightarrow \\frac{6}{6+x}=\\frac{3x}{13,5}$.<br>$\\Rightarrow 6 \\cdot 13,5 = 3x (6+x) \\Rightarrow 81 = 18x + 3x^2 \\Rightarrow x^2 + 6x - 27 = 0$.<br>$(x-3)(x+9)=0 \\Rightarrow x=3$ (nhận) hoặc $x=-9$ (loại)."
                         }
                     ]
                 }
@@ -276,7 +298,7 @@ const AppConfig = {
                         {
                             id: 1,
                             topic: "Vectơ chỉ phương",
-                            type: "basic", // New field
+                            type: "basic",
                             difficulty: "basic",
                             question: "Một vectơ chỉ phương của đường thẳng $\\begin{cases}x=2+3t\\\\ y=-3-t\\end{cases}$ là:",
                             options: [
@@ -400,7 +422,7 @@ const AppConfig = {
                     icon: "fa-infinity",
                     color: "from-amber-500 to-orange-500",
                     description: "Elip, Hypebol, Parabol và các yếu tố hình học liên quan.",
-                    questions: [] // Placeholder
+                    questions: []
                 }
             ]
         },

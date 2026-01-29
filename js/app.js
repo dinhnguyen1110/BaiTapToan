@@ -280,6 +280,11 @@ class QuizEngine {
 
         // Reprocess MathJax
         if (window.MathJax) MathJax.typesetPromise();
+
+        // Process TikZ via i.upmath.me
+        if (window.upmathLoader) {
+            window.upmathLoader.render(document.getElementById('question-content'));
+        }
     }
 
     handleAnswer(selectedIndex) {
@@ -497,6 +502,11 @@ class ExamManager {
         });
 
         if (window.MathJax) MathJax.typesetPromise();
+
+        // Fix: Render TikZ images in Exam Mode
+        if (window.upmathLoader) {
+            window.upmathLoader.render(document.getElementById('exam-questions-list'));
+        }
     }
 
     selectAnswer(qIdx, optIdx) {
