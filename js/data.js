@@ -387,32 +387,6 @@ const AppConfig = {
                             ],
                             hint: "So sánh với phương trình chuẩn $(x-a)^2 + (y-b)^2 = R^2$.",
                             rationale: "Phương trình đường tròn có dạng $(x-a)^2 + (y-b)^2 = R^2$ có tâm $I(a;b)$ và bán kính $R$.<br>Từ phương trình $(x - 1)^2 + (y + 3)^2 = 16$, ta có:<br> $a = 1$, $b = -3$, $R^2 = 16 \\Rightarrow R = 4$.<br>Vậy tâm $I(1; -3)$ và bán kính $R=4$."
-                        },
-                        {
-                            id: 2,
-                            topic: "Viết phương trình đường tròn",
-                            question: "Đường tròn $(C)$ có tọa độ tâm $I(-2; 4)$ và bán kính $R = 4$ có phương trình là:",
-                            options: [
-                                { text: "$(C): (x + 2)^2 + (y - 4)^2 = 16$", correct: true },
-                                { text: "$(C): (x - 2)^2 + (y + 4)^2 = 16$", correct: false },
-                                { text: "$(C): (x + 2)^2 + (y - 4)^2 = 4$", correct: false },
-                                { text: "$(C): (x - 2)^2 + (y + 4)^2 = 4$", correct: false }
-                            ],
-                            hint: "Thay $a, b, R$ vào công thức $(x-a)^2 + (y-b)^2 = R^2$.",
-                            rationale: "Phương trình đường tròn tâm $I(a; b)$ bán kính $R$ là $(x-a)^2 + (y-b)^2 = R^2$.<br>Thay $I(-2; 4)$ và $R=4$:<br>$(x - (-2))^2 + (y - 4)^2 = 4^2$<br>$\\Leftrightarrow (x + 2)^2 + (y - 4)^2 = 16$."
-                        },
-                        {
-                            id: 3,
-                            topic: "Tìm tâm và bán kính",
-                            question: "Bán kính $R$ của đường tròn $x^2 + y^2 - 2x + 4y + 1 = 0$ là:",
-                            options: [
-                                { text: "$R = 2$", correct: true },
-                                { text: "$R = 4$", correct: false },
-                                { text: "$R = 1$", correct: false },
-                                { text: "$R = 3$", correct: false }
-                            ],
-                            hint: "Xác định hệ số $a, b, c$ và dùng công thức $R = \\sqrt{a^2 + b^2 - c}$.",
-                            rationale: "Phương trình có dạng $x^2 + y^2 - 2ax - 2by + c = 0$.<br>Ta có: $-2a = -2 \\Rightarrow a = 1$; $-2b = 4 \\Rightarrow b = -2$; $c = 1$.<br>Bán kính $R = \\sqrt{a^2 + b^2 - c} = \\sqrt{1^2 + (-2)^2 - 1} = \\sqrt{1 + 4 - 1} = \\sqrt{4} = 2$."
                         }
                     ]
                 },

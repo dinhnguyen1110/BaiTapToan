@@ -375,6 +375,12 @@ class QuizEngine {
                 total: this.currentQuestions.length,
                 topic: this.currentTopic.title
             });
+
+            // Show Certificate Button if outstanding
+            // Show HTML Certificate if outstanding
+            if (percent >= 90) {
+                app.showCertificate(this.score, this.currentQuestions.length, percent);
+            }
         }
     }
     retry() {
@@ -542,6 +548,11 @@ class ExamManager {
             };
             firebaseService.saveResult(resultData);
             userStats.addResult(resultData);
+
+            // Show HTML Certificate if outstanding
+            if (percent >= 90) {
+                app.showCertificate(score, this.questions.length, percent);
+            }
         }
     }
 }
@@ -1055,6 +1066,171 @@ class App {
             }, 300);
         });
     }
+
+    generateCertificate() {
+        let name = authManager.currentUser;
+        if (!name) {
+            // Auto-prompt might be intrusive if instant, but let's keep it for now
+            // or default to "Học sinh" if we want purely automatic.
+            // Let's try to prompt, if they cancel, we default.
+            name = prompt("Chúc mừng! Bạn đạt điểm xuất sắc. Nhập tên để in vào giấy khen:", "Học sinh");
+            if (!name) name = "Học sinh";
+        }
+
+        let score = 0;
+        let total = 0;
+
+        // Grab score from DOM
+        score = parseInt(document.getElementById('final-score').textContent);
+        total = parseInt(document.getElementById('final-total').textContent);
+        const percent = Math.round((score / total) * 100);
+
+        if (percent >= 90) {
+            this.showCertificate(score, total, percent);
+        }
+    }
+
+    // NEW: Show HTML Certificate (not image)
+    showCertificate(score, total, percent) {
+        const name = authManager.currentUser || "Học sinh";
+
+        // Only update name (keep reason fixed as in MauGiayKhen.html)
+        document.getElementById('cert-name').textContent = name;
+
+        // Date
+        const now = new Date();
+        document.getElementById('cert-date').textContent = `Đắk Lắk, ngày ${now.getDate()} tháng ${now.getMonth() + 1} năm ${now.getFullYear()}`;
+
+        // Show certificate area
+        const certArea = document.getElementById('certificate-area');
+        certArea.classList.remove('hidden');
+
+        // Auto-scale certificate to fit screen
+        this.scaleCertificate();
+
+        // Scroll to certificate
+        setTimeout(() => {
+            certArea.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+
+        // Re-scale on window resize
+        window.addEventListener('resize', () => this.scaleCertificate());
+    }
+
+    // Auto-scale certificate using transform to fit container width
+    scaleCertificate() {
+        const container = document.querySelector('.cert-preview-container');
+        const certBox = document.getElementById('printable-area');
+
+        if (!container || !certBox) return;
+
+        // Certificate original size: 297mm x 210mm
+        // Convert mm to px (1mm ≈ 3.7795px at 96dpi)
+        const certWidthPx = 297 * 3.7795;
+        const certHeightPx = 210 * 3.7795;
+
+        // Available width (container width minus padding)
+        const availableWidth = container.clientWidth - 20;
+
+        // Calculate scale factor to fit width
+        let scale = availableWidth / certWidthPx;
+
+        // Cap scale at 1 (don't enlarge beyond original size)
+        scale = Math.min(scale, 1);
+
+        // Minimum scale for readability
+        scale = Math.max(scale, 0.2);
+
+        // Apply transform
+        certBox.style.transform = `scale(${scale})`;
+
+        // Adjust container height to match scaled certificate
+        const scaledHeight = certHeightPx * scale;
+        container.style.height = `${scaledHeight + 20}px`;
+    }
+
+    // Download certificate as image using html2canvas
+    async downloadCertificate() {
+        const certBox = document.getElementById('printable-area');
+        if (!certBox) {
+            alert('Không tìm thấy giấy khen!');
+            return;
+        }
+
+        const btn = document.getElementById('download-cert-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tạo ảnh...';
+        btn.disabled = true;
+
+        try {
+            await new Promise(r => setTimeout(r, 500));
+
+            // TEMPORARILY RESET TRANSFORM ON ORIGINAL ELEMENT
+            // This ensures we capture exactly what is loaded (fonts, images)
+            // without cloning issues.
+            certBox.style.transform = 'none';
+            certBox.style.width = '297mm';
+            certBox.style.height = '210mm';
+            certBox.style.margin = '0 auto';
+
+            // Allow parent to expand so html2canvas sees full content
+            const parent = certBox.parentElement;
+            // We need to store parent state too, but we can't easily access variables across blocks if we split edits.
+            // So we will just modify parent here and assume we can restore it later or let page refresh handle it (since user downloads and leaves usually).
+            // Actually, better to store it in a way we can restore.
+            // But for now, let's just make it work.
+            parent.style.overflow = 'visible';
+            parent.style.width = 'auto';
+            parent.style.height = 'auto';
+            parent.style.display = 'block';
+
+            const canvas = await html2canvas(certBox, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#fffdf0',
+                logging: false,
+                // Explicit dimensions to avoid clipping
+                width: certBox.offsetWidth,
+                height: certBox.offsetHeight,
+                windowWidth: certBox.offsetWidth + 100,
+                windowHeight: certBox.offsetHeight + 100,
+                x: 0,
+                y: 0
+            });
+
+            // RESTORE ORIGINAL STATE (Basic restore)
+            certBox.style.transform = '';
+            certBox.style.width = '297mm';
+            certBox.style.height = '210mm';
+            certBox.style.margin = '';
+
+            if (parent) {
+                parent.style.overflow = '';
+                parent.style.width = '';
+                parent.style.height = '';
+                parent.style.display = '';
+            }
+
+            this.scaleCertificate();
+
+            const dataUrl = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `GiayKhen_${authManager.currentUser || 'HocSinh'}_${Date.now()}.png`;
+            link.href = dataUrl;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+        } catch (err) {
+            console.error('Certificate download error:', err);
+            alert('Lỗi khi tạo ảnh giấy khen: ' + err.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    }
+
 }
 
 // --- INITIALIZATION ---

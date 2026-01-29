@@ -49,12 +49,327 @@
         }
     </script>
 
+    <!-- CSS Giấy Khen -->
+    <style>
+        .cert-preview-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            /* Height will be set by JS based on scaled certificate */
+        }
+
+        .cert-preview-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* SCOPED CERTIFICATE STYLES FROM MauGiayKhen.html */
+        .certificate-container {
+            width: 297mm;
+            height: 210mm;
+            background-color: #fffdf0;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            box-sizing: border-box;
+
+            /* Font & Reset defaults */
+            font-family: 'Noto Serif', serif;
+            color: #333;
+            text-align: center;
+            /* inherited from body in source */
+            line-height: normal !important;
+            /* Force reset */
+
+            /* Scaling props */
+            transform-origin: top center;
+            flex-shrink: 0;
+        }
+
+        .certificate-container .border-outer {
+            width: 100%;
+            height: 100%;
+            border: 5px solid #b8860b;
+            padding: 5px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .certificate-container .border-inner {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #daa520;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: radial-gradient(#d4af37 1px, transparent 1px);
+            background-size: 30px 30px;
+            padding: 20px 40px;
+            box-sizing: border-box;
+        }
+
+        .certificate-container .corner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 5px double #b8860b;
+            box-sizing: border-box;
+        }
+
+        .certificate-container .top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .certificate-container .top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .certificate-container .bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .certificate-container .bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .certificate-container .corner::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            border: 2px solid #daa520;
+        }
+
+        .certificate-container .top-left::after {
+            top: 5px;
+            left: 5px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .certificate-container .top-right::after {
+            top: 5px;
+            right: 5px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .certificate-container .bottom-left::after {
+            bottom: 5px;
+            left: 5px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .certificate-container .bottom-right::after {
+            bottom: 5px;
+            right: 5px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .certificate-container .header-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .certificate-container .nation {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 16pt;
+            margin-bottom: 5px;
+        }
+
+        .certificate-container .motto {
+            font-weight: bold;
+            font-size: 14pt;
+            position: relative;
+            display: inline-block;
+        }
+
+        .certificate-container .motto::after {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 2px;
+            background: #333;
+            margin: 5px auto 0;
+        }
+
+        .certificate-container .logo-placeholder {
+            margin-top: 15px;
+            color: #daa520;
+            font-size: 24px;
+        }
+
+        .certificate-container h1.title {
+            font-family: 'Playfair Display', serif;
+            color: #cc0000;
+            font-size: 52pt;
+            margin: 10px 0 5px 0;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .certificate-container .subtitle {
+            font-size: 14pt;
+            margin-bottom: 10px;
+            font-style: italic;
+            color: #555;
+        }
+
+        .certificate-container .content-body {
+            width: 100%;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .certificate-container .recipient-name {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 50pt;
+            color: #b8860b;
+            margin: 0px 0 0px 0;
+            line-height: normal;
+            /* Force normal */
+            min-height: 70px;
+            outline: none;
+            cursor: text;
+        }
+
+        .certificate-container .recipient-class {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .certificate-container .award-for {
+            font-size: 14pt;
+            font-weight: normal;
+            margin-bottom: 5px;
+            font-style: italic;
+        }
+
+        .certificate-container .award-reason {
+            font-family: 'Roboto Slab', serif;
+            font-size: 20pt;
+            color: #cc0000;
+            font-weight: bold;
+            width: 90%;
+            margin: 0 auto;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 5px;
+            outline: none;
+            cursor: text;
+        }
+
+        .certificate-container .footer {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            margin-bottom: 40px;
+            padding: 0 80px;
+            box-sizing: border-box;
+        }
+
+        .certificate-container .footer-right {
+            text-align: center;
+            width: 300px;
+        }
+
+        .certificate-container .date-line {
+            font-style: italic;
+            font-size: 13pt;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .certificate-container .signer-title {
+            font-size: 14pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .certificate-container .signature-hand {
+            font-family: 'Great Vibes', cursive;
+            font-size: 40pt;
+            color: #000080;
+            margin: 10px 0;
+            transform: rotate(-5deg);
+        }
+
+        .certificate-container .signer-name {
+            font-size: 15pt;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .certificate-container .stamp-placeholder {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border: 3px solid rgba(204, 0, 0, 0.6);
+            border-radius: 50%;
+            right: 210px;
+            bottom: 90px;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(204, 0, 0, 0.6);
+            font-weight: bold;
+            font-size: 14px;
+            transform: rotate(-15deg);
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        .certificate-container .badge-left {
+            position: absolute;
+            bottom: 50px;
+            left: 80px;
+            width: 130px;
+            height: 130px;
+            z-index: 10;
+            transform: rotate(-20deg);
+        }
+    </style>
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet">
+    <!-- Fonts cho Giấy Khen -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto+Slab:wght@300;400;700&family=Pinyon+Script&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap"
+        rel="stylesheet">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- html2canvas for certificate download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <!-- MathJax -->
     <script>
@@ -76,6 +391,9 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <!-- Upmath Loader for dynamic TikZ rendering -->
     <script src="js/utils/upmath-loader.js"></script>
+
+    <!-- html2canvas for certificate image generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 
 
@@ -370,15 +688,104 @@
             </div>
 
             <div class="flex flex-col gap-3">
-                <button onclick="quiz.retry()"
-                    class="w-full py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors">
-                    <i class="fa-solid fa-rotate-left mr-2"></i> Làm lại
-                </button>
-                <button onclick="app.goHome()"
-                    class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-200 transition-colors">
-                    <i class="fa-solid fa-house mr-2"></i> Về màn hình chính
-                </button>
-            </div>
+                <div class="flex flex-col gap-3">
+                    <!-- Certificate Area (HTML-based, not image) -->
+                    <div id="certificate-area" class="hidden w-full">
+
+
+                        <div class="cert-preview-container">
+                            <div id="printable-area" class="certificate-container">
+                                <div class="border-outer">
+                                    <div class="border-inner">
+                                        <!-- 4 Góc trang trí -->
+                                        <div class="corner top-left"></div>
+                                        <div class="corner top-right"></div>
+                                        <div class="corner bottom-left"></div>
+                                        <div class="corner bottom-right"></div>
+
+                                        <!-- Quốc hiệu & Tiêu ngữ -->
+                                        <div class="header-text">
+                                            <div class="nation">Cộng hòa Xã hội Chủ nghĩa Việt Nam</div>
+                                            <div class="motto">Độc lập - Tự do - Hạnh phúc</div>
+                                        </div>
+
+                                        <!-- Logo trang trí -->
+                                        <div class="logo-placeholder">
+                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="#d4af37">
+                                                <path
+                                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                            </svg>
+                                        </div>
+
+                                        <!-- Tiêu đề -->
+                                        <h1 class="title">GIẤY KHEN</h1>
+                                        <div class="subtitle">Trân trọng trao tặng cho em</div>
+
+                                        <!-- Nội dung -->
+                                        <div class="content-body">
+                                            <div id="cert-name" class="recipient-name" contenteditable="false">Nguyễn
+                                                Thị
+                                                Demo</div>
+                                            <div class="recipient-class" contenteditable="false">Lớp: 12A</div>
+                                            <div class="award-for">Đã có thành tích:</div>
+                                            <div class="award-reason" contenteditable="false">Hoàn thành xuất sắc bài
+                                                luyện tập Toán</div>
+                                        </div>
+
+                                        <!-- Footer -->
+                                        <div class="footer">
+                                            <div class="footer-right">
+                                                <div id="cert-date" class="date-line" contenteditable="false">Đắk Lắk,
+                                                    ngày ... tháng ... năm ...</div>
+                                                <div class="signer-title">GIÁO VIÊN BỘ MÔN</div>
+                                                <div class="signature-hand">Nguyên</div>
+                                                <div class="signer-name" contenteditable="false">Nguyễn Đình Nguyên
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Badge A+ -->
+                                        <div class="badge-left">
+                                            <svg width="100%" height="100%" viewBox="0 0 120 120">
+                                                <circle cx="60" cy="60" r="56" stroke="#d98d2b" stroke-width="4"
+                                                    fill="#fffdf0" />
+                                                <circle cx="60" cy="60" r="48" stroke="#d98d2b" stroke-width="1.5"
+                                                    stroke-dasharray="3,2" fill="none" />
+                                                <text x="60" y="62" font-family="'Roboto Slab', serif"
+                                                    font-weight="bold" font-size="38" fill="#c47815"
+                                                    text-anchor="middle" dominant-baseline="middle">A+</text>
+                                                <text x="60" y="38" font-family="Arial, sans-serif" font-weight="bold"
+                                                    font-size="10" fill="#c47815" text-anchor="middle"
+                                                    letter-spacing="1">CHỨNG NHẬN</text>
+                                                <text x="60" y="86" font-family="Arial, sans-serif" font-weight="bold"
+                                                    font-size="10" fill="#c47815" text-anchor="middle"
+                                                    letter-spacing="1">XUẤT SẮC</text>
+                                            </svg>
+                                        </div>
+
+                                        <!-- Con dấu -->
+                                        <div class="stamp-placeholder">(Xác nhận)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Certificate HTML -->
+                        </div>
+
+                        <button id="download-cert-btn" onclick="app.downloadCertificate()"
+                            class="w-full py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-xl font-bold shadow-lg shadow-orange-200 hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 mt-4">
+                            <i class="fa-solid fa-download"></i> Tải Giấy Khen
+                        </button>
+                    </div>
+
+                    <button onclick="quiz.retry()"
+                        class="w-full py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors">
+                        <i class="fa-solid fa-rotate-left mr-2"></i> Làm lại
+                    </button>
+                    <button onclick="app.goHome()"
+                        class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-200 transition-colors">
+                        <i class="fa-solid fa-house mr-2"></i> Về màn hình chính
+                    </button>
+                </div>
         </section>
 
 
@@ -614,7 +1021,14 @@
         </div>
     </div>
 
+    <!-- Hidden Certificate Render Area (for html2canvas) -->
+    <div id="certificate-render-area" class="fixed -z-50 pointer-events-none"
+        style="width: 1122px; height: 794px; left: -15000px; top: 0; background-color: #555;">
+        <!-- Certificate HTML will be injected here by CertificateGenerator -->
+    </div>
+
     <!-- JAVASCRIPT LOGIC -->
+    <script src="js/utils/certificate-generator.js"></script>
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
 </body>

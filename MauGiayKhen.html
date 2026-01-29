@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giấy Khen - Certificate of Merit</title>
+    <!-- Nhúng font chữ Google để tăng tính thẩm mỹ -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto+Slab:wght@300;400;700&family=Pinyon+Script&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Thiết lập chung */
+        body {
+            background-color: #555; /* Màu nền web tối để làm nổi bật giấy khen */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Noto Serif', serif;
+        }
+
+        /* Khung chính của giấy khen (Tỉ lệ A4 Ngang) */
+        .certificate-container {
+            width: 297mm; /* Chiều rộng A4 */
+            height: 210mm; /* Chiều cao A4 */
+            background-color: #fffdf0; /* Màu kem giấy cũ */
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        /* Viền ngoài cùng */
+        .border-outer {
+            width: 100%;
+            height: 100%;
+            border: 5px solid #b8860b; /* Màu vàng đồng đậm */
+            padding: 5px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Viền hoa văn bên trong */
+        .border-inner {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #daa520; /* Màu vàng kim */
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Tạo họa tiết nền chìm mờ nhạt */
+            background-image: radial-gradient(#d4af37 1px, transparent 1px);
+            background-size: 30px 30px; 
+            padding: 20px 40px;
+            box-sizing: border-box;
+        }
+
+        /* Trang trí 4 góc (CSS thuần) */
+        .corner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 5px double #b8860b;
+            box-sizing: border-box;
+        }
+        .top-left { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .top-right { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+        .bottom-left { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+        .bottom-right { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+        /* Họa tiết góc phụ */
+        .corner::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            border: 2px solid #daa520;
+        }
+        .top-left::after { top: 5px; left: 5px; border-right: none; border-bottom: none; }
+        .top-right::after { top: 5px; right: 5px; border-left: none; border-bottom: none; }
+        .bottom-left::after { bottom: 5px; left: 5px; border-right: none; border-top: none; }
+        .bottom-right::after { bottom: 5px; right: 5px; border-left: none; border-top: none; }
+
+        /* Nội dung: Quốc hiệu Tiêu ngữ */
+        .header-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        .nation {
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 16pt;
+            margin-bottom: 5px;
+        }
+        .motto {
+            font-weight: bold;
+            font-size: 14pt;
+            position: relative;
+            display: inline-block;
+        }
+        /* Đường gạch chân tiêu ngữ */
+        .motto::after {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 2px;
+            background: #333;
+            margin: 5px auto 0;
+        }
+
+        /* Hình huy hiệu/logo (Placeholder) */
+        .logo-placeholder {
+            margin-top: 15px;
+            color: #daa520;
+            font-size: 24px;
+        }
+
+        /* Tiêu đề GIẤY KHEN */
+        h1.title {
+            font-family: 'Playfair Display', serif;
+            color: #cc0000; /* Màu đỏ đô truyền thống */
+            font-size: 52pt;
+            margin: 10px 0 5px 0;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 14pt;
+            margin-bottom: 10px;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Phần nội dung chính */
+        .content-body {
+            width: 100%;
+            text-align: center;
+            flex-grow: 1; /* Đẩy footer xuống dưới */
+        }
+
+        .recipient-label {
+            font-size: 14pt;
+            margin-top: 20px;
+        }
+
+        /* Tên người nhận - Sử dụng font viết tay sang trọng */
+        .recipient-name {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 50pt;
+            color: #b8860b;
+            margin: 0px 0 0px 0;
+            line-height: 1.2;
+            min-height: 70px;
+            outline: none; /* Bỏ viền khi click vào sửa */
+            cursor: text;
+        }
+
+        .recipient-class {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .award-for {
+            font-size: 14pt;
+            font-weight: normal;
+            margin-bottom: 5px;
+            font-style: italic;
+        }
+
+        .award-reason {
+            font-family: 'Roboto Slab', serif;
+            font-size: 20pt;
+            color: #cc0000;
+            font-weight: bold;
+            width: 90%;
+            margin: 0 auto;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 5px;
+            outline: none;
+            cursor: text;
+        }
+
+        /* Phần Footer: Ngày tháng và Chữ ký */
+        .footer {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end; /* Căn phải cho chữ ký đơn */
+            margin-top: 30px;
+            margin-bottom: 40px;
+            padding: 0 80px; /* Thụt vào trong một chút */
+            box-sizing: border-box;
+        }
+
+        .footer-right {
+            text-align: center;
+            width: 300px;
+        }
+
+        .date-line {
+            font-style: italic;
+            font-size: 13pt;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .signer-title {
+            font-size: 14pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        /* Chữ ký tay */
+        .signature-hand {
+            font-family: 'Great Vibes', cursive;
+            font-size: 40pt;
+            color: #000080; /* Màu mực xanh */
+            margin: 10px 0;
+            transform: rotate(-5deg); /* Hơi nghiêng giống chữ ký thật */
+        }
+
+        .signer-name {
+            font-size: 15pt;
+            font-weight: bold;
+            outline: none;
+        }
+
+        /* Hiệu ứng đóng dấu giả lập (CSS) */
+        .stamp-placeholder {
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border: 3px solid rgba(204, 0, 0, 0.6);
+            border-radius: 50%;
+            right: 210px; /* Căn chỉnh vị trí so với chữ ký */
+            bottom: 90px;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(204, 0, 0, 0.6);
+            font-weight: bold;
+            font-size: 14px;
+            transform: rotate(-15deg);
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        /* Logo A+ góc dưới trái */
+        .badge-left {
+            position: absolute;
+            bottom: 50px;
+            left: 80px;
+            width: 130px;
+            height: 130px;
+            z-index: 10;
+            transform: rotate(-20deg); /* Nghiêng logo 15 độ */
+        }
+
+        /* Cấu hình IN ẤN */
+        @media print {
+            body {
+                background: none;
+                margin: 0;
+            }
+            .certificate-container {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+                page-break-after: always;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            /* Ẩn các gợi ý chỉnh sửa khi in */
+            [contenteditable]:empty::before {
+                content: "" !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="certificate-container">
+        <!-- Viền ngoài -->
+        <div class="border-outer">
+            <!-- Viền trong -->
+            <div class="border-inner">
+                
+                <!-- 4 Góc trang trí -->
+                <div class="corner top-left"></div>
+                <div class="corner top-right"></div>
+                <div class="corner bottom-left"></div>
+                <div class="corner bottom-right"></div>
+
+                <!-- Quốc hiệu & Tiêu ngữ -->
+                <div class="header-text">
+                    <div class="nation">Cộng hòa Xã hội Chủ nghĩa Việt Nam</div>
+                    <div class="motto">Độc lập - Tự do - Hạnh phúc</div>
+                </div>
+
+                <!-- Logo trang trí (Icon sao vàng) -->
+                <div class="logo-placeholder">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="#d4af37">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+
+                <!-- Tiêu đề chính -->
+                <h1 class="title">GIẤY KHEN</h1>
+                <div class="subtitle">Trân trọng trao tặng cho em</div>
+                
+                <div class="content-body">
+                    <!-- Tên người nhận -->
+                    <div class="recipient-name" contenteditable="true">Nguyễn Thị Demo</div>
+                    <!-- Lớp -->
+                    <div class="recipient-class" contenteditable="true">Lớp: 12A</div>
+                    
+                    <div class="award-for">Đã có thành tích:</div>
+                    <!-- Lý do khen thưởng -->
+                    <div class="award-reason" contenteditable="true">Hoàn thành xuất sắc bài luyện tập Toán</div>
+                </div>
+
+                <!-- Chữ ký và Ngày tháng -->
+                <div class="footer">
+                    <div class="footer-right">
+                        <!-- Ngày tháng tự động điền bởi JS -->
+                        <div class="date-line" id="date-placeholder" contenteditable="true">Đắk Lắk, ngày ... tháng ... năm ...</div>
+                        
+                        <div class="signer-title">GIÁO VIÊN BỘ MÔN</div>
+                        
+                        <!-- Chữ ký tay giả lập -->
+                        <div class="signature-hand">Nguyên</div>
+                        
+                        <!-- Họ tên người ký -->
+                        <div class="signer-name" contenteditable="true">Nguyễn Đình Nguyên</div>
+                    </div>
+                </div>
+
+                <!-- Logo A+ góc dưới trái (Vẽ bằng SVG) -->
+                <div class="badge-left">
+                    <svg width="100%" height="100%" viewBox="0 0 120 120">
+                        <!-- Vòng tròn ngoài -->
+                        <circle cx="60" cy="60" r="56" stroke="#d98d2b" stroke-width="4" fill="#fffdf0" />
+                        <!-- Vòng tròn nét đứt bên trong -->
+                        <circle cx="60" cy="60" r="48" stroke="#d98d2b" stroke-width="1.5" stroke-dasharray="3,2" fill="none" />
+                        
+                        <!-- Chữ A+ ở giữa -->
+                        <text x="60" y="62" font-family="'Roboto Slab', serif" font-weight="bold" font-size="38" fill="#c47815" text-anchor="middle" dominant-baseline="middle">A+</text>
+                        
+                        <!-- Chữ CHỨNG NHẬN thẳng hàng trên - Đã dời xuống y=38 để tránh đè viền -->
+                        <text x="60" y="38" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#c47815" text-anchor="middle" letter-spacing="1">CHỨNG NHẬN</text>
+                        
+                        <!-- Chữ XUẤT SẮC thẳng hàng dưới - Đã dời lên y=86 để cân đối -->
+                        <text x="60" y="86" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#c47815" text-anchor="middle" letter-spacing="1">XUẤT SẮC</text>
+                    </svg>
+                </div>
+
+                <!-- Con dấu giả lập -->
+                <div class="stamp-placeholder">
+                    (Xác nhận)
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Script tự động điền ngày hiện tại -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateElement = document.getElementById('date-placeholder');
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth() + 1; // Tháng bắt đầu từ 0
+            const year = now.getFullYear();
+            
+            // Format ngày tháng tiếng Việt
+            dateElement.textContent = `Đắk Lắk, ngày ${day} tháng ${month} năm ${year}`;
+        });
+    </script>
+</body>
+</html>
