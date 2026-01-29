@@ -24,7 +24,7 @@ class UpmathLoader {
             if (!tikzCode) return;
 
             // Inject necessary libraries for coordinate calculations and advanced geometry
-            const libraries = "\\usetikzlibrary{calc,angles,intersections,quotes,backgrounds} ";
+            const libraries = "\\usetikzlibrary{calc,angles,intersections,quotes,backgrounds,patterns} ";
             const fullTexCode = libraries + tikzCode;
 
             // Encode the TikZ code for URL

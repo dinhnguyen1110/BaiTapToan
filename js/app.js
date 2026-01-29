@@ -427,9 +427,10 @@ class ExamManager {
     }
 
     start() {
-        // 1. Collect all questions from all topics in all chapters
+        // 1. Collect all questions from all topics in all chapters of the CURRENT GRADE
         let pool = [];
-        AppConfig.courseData.forEach(chapter => {
+        const chapters = app.currentGradeData ? app.currentGradeData.chapters : [];
+        chapters.forEach(chapter => {
             chapter.topics.forEach(topic => {
                 if (topic.questions && topic.questions.length > 0) {
                     pool = pool.concat(topic.questions.map(q => ({ ...q, _topicTitle: topic.title })));
@@ -740,14 +741,20 @@ class AiGenerator {
  */
 class App {
     constructor() {
-        this.screens = ['screen-welcome', 'screen-dashboard', 'screen-quiz', 'screen-completion', 'screen-exam'];
+        this.screens = ['screen-welcome', 'screen-dashboard', 'screen-quiz', 'screen-completion', 'screen-exam', 'screen-grade-selection'];
+
+        // --- GRADE MANAGEMENT ---
+        // Load saved grade or default to Grade 10
+        // this.currentGradeId = localStorage.getItem('selectedGrade') || "grade_10"; // No longer auto-select
+        this.currentGradeId = null;
+        this.currentGradeData = null;
     }
 
     init() {
         // Check if already logged in (optional persistence)
         if (authManager.currentUser) {
-            this.showScreen('screen-dashboard');
-            this.renderDashboard();
+            // New Flow: Always go to Grade Selection first if logged in
+            this.showScreen('screen-grade-selection');
         } else {
             this.showScreen('screen-welcome');
         }
@@ -769,12 +776,38 @@ class App {
             if (e.target.id === 'modal-level-select') this.closeModals();
         });
 
+        // Setup UI
+        // this.setupGradeSelector(); // Disabled small header selector since we have full screen selection now
         userStats.updateUI();
     }
 
+    // New method for Full Screen Selection
+    selectGrade(gradeId) {
+        const grade = AppConfig.curriculum.find(g => g.id === gradeId);
+        if (grade) {
+            this.currentGradeId = gradeId;
+            this.currentGradeData = grade;
+            localStorage.setItem('selectedGrade', gradeId); // Still save preference if needed elsewhere
+            this.showScreen('screen-dashboard');
+        }
+    }
+
+    backToGrades() {
+        this.showScreen('screen-grade-selection');
+    }
+
+    switchGrade(gradeId) {
+        // Kept for backward compatibility if we re-enable header selector, calling selectGrade
+        this.selectGrade(gradeId);
+    }
+
     showScreen(id) {
-        this.screens.forEach(s => document.getElementById(s).classList.add('hidden'));
-        document.getElementById(id).classList.remove('hidden');
+        this.screens.forEach(s => {
+            const el = document.getElementById(s);
+            if (el) el.classList.add('hidden');
+        });
+        const target = document.getElementById(id);
+        if (target) target.classList.remove('hidden');
 
         if (id === 'screen-dashboard') this.renderDashboard();
     }
@@ -784,7 +817,7 @@ class App {
         const name = document.getElementById('username-input').value.trim();
         if (name) {
             authManager.login(name);
-            this.showScreen('screen-dashboard');
+            this.showScreen('screen-grade-selection'); // Go to selection, not dashboard
         }
     }
 
@@ -792,16 +825,70 @@ class App {
         const grid = document.getElementById('topic-grid');
         grid.innerHTML = '';
 
-        // Change grid to 1 col usually, but we will render separate grids per chapter if needed.
-        // Or render headings.
-        grid.className = "flex flex-col gap-8"; // Reset grid to col for Chapters
+        // Handle case where grade data might be missing or empty
+        if (!this.currentGradeData || !this.currentGradeData.chapters) {
+            grid.innerHTML = '<div class="text-center text-slate-500 py-10 col-span-3">Đang cập nhật dữ liệu cho khối lớp này...</div>';
+            return;
+        }
 
-        AppConfig.courseData.forEach((chapter, cIdx) => {
+        // Remove existing "Back to Grades" buttons to prevent duplicates
+        const existingBackBtns = grid.parentNode.querySelectorAll('.btn-back-grade');
+        existingBackBtns.forEach(btn => btn.remove());
+
+        // Add "Back to Grades" button on top of Dashboard
+        const backBtn = document.createElement('button');
+        backBtn.className = "btn-back-grade mb-6 text-indigo-600 font-bold hover:underline flex items-center gap-2";
+        backBtn.onclick = () => this.backToGrades();
+        backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Chọn Lớp Khác';
+        grid.parentNode.insertBefore(backBtn, grid);
+
+        // Reset grid to col for Chapters
+        grid.className = "flex flex-col gap-8";
+
+        this.currentGradeData.chapters.forEach((chapter, cIdx) => {
             // Chapter Section
             const chapterSection = document.createElement('div');
+            chapterSection.className = "mb-8 transform transition-all duration-300"; // Added transition
+
+            // Unique ID for toggle
+            const gridId = `chapter-grid-${cIdx}`;
+
+            // Enhanced styles for chapter header
             chapterSection.innerHTML = `
-                <h2 class="text-2xl font-display font-bold text-slate-700 mb-4 pl-2 border-l-4 border-indigo-500">${chapter.title}</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="group relative overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-slate-100"
+                     onclick="app.toggleChapter('${gridId}', this)">
+                    
+                    <!-- Decorative gradient bar on the left with animation -->
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-blue-500 to-indigo-600 group-hover:w-2 transition-all duration-300"></div>
+
+                    <div class="p-6 flex items-center justify-between z-10 relative">
+                        <div class="flex items-center gap-5">
+                            <!-- Chapter Number/Icon Circle -->
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xl group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 shadow-sm ring-4 ring-white group-hover:ring-indigo-100">
+                                 ${cIdx + 1}
+                            </div>
+                            
+                            <div>
+                                <span class="block text-xs font-bold tracking-wider text-slate-400 uppercase mb-1">Chương ${cIdx + 1}</span>
+                                <h2 class="text-xl md:text-2xl font-display font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">${chapter.title}</h2>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                             <span class="hidden md:inline-block text-sm font-medium text-slate-400 bg-slate-50 px-3 py-1 rounded-full border border-slate-100 group-hover:bg-indigo-50 group-hover:text-indigo-600 group-hover:border-indigo-100 transition-all">
+                                ${chapter.topics.length} chủ đề
+                            </span>
+                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+                                <i class="fa-solid fa-chevron-down text-slate-400 group-hover:text-indigo-600 transition-transform duration-300 transform"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Subtle background pattern/gradient on hover -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                </div>
+                
+                <div id="${gridId}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 hidden opacity-0 transition-all duration-300 transform -translate-y-4">
                     <!-- Topics Injected Here -->
                 </div>
             `;
@@ -840,7 +927,7 @@ class App {
         // Add "Mock Exam" Card at the bottom or separate section
         const examSection = document.createElement('div');
         examSection.innerHTML = `
-             <h2 class="text-2xl font-display font-bold text-slate-700 mb-4 pl-2 border-l-4 border-red-500">Thi Thử Tổng Hợp</h2>
+             <h2 class="text-2xl font-display font-bold text-slate-700 mb-4 pl-2 border-l-4 border-red-500">Thi Thử Tổng Hợp (Lớp ${this.currentGradeData.name.replace('Lớp ', '')})</h2>
              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         `;
         const examCard = document.createElement('div');
@@ -858,8 +945,43 @@ class App {
         grid.appendChild(examSection);
     }
 
+    toggleChapter(gridId, headerEl) {
+        const grid = document.getElementById(gridId);
+        const icon = headerEl.querySelector('i');
+
+        if (grid.classList.contains('hidden')) {
+            // SHOW
+            grid.classList.remove('hidden');
+            // Trigger reflow
+            void grid.offsetWidth;
+            grid.classList.remove('opacity-0', '-translate-y-4');
+            grid.classList.add('opacity-100', 'translate-y-0');
+
+            // Icon
+            icon.classList.add('rotate-180');
+            headerEl.classList.add('border-indigo-500', 'bg-indigo-50');
+            headerEl.classList.remove('border-slate-100', 'bg-white');
+        } else {
+            // HIDE
+            grid.classList.remove('opacity-100', 'translate-y-0');
+            grid.classList.add('opacity-0', '-translate-y-4');
+
+            icon.classList.remove('rotate-180');
+            headerEl.classList.remove('border-indigo-500', 'bg-indigo-50');
+            headerEl.classList.add('border-slate-100', 'bg-white');
+
+            // Wait for transition to finish before hiding
+            setTimeout(() => {
+                grid.classList.add('hidden');
+            }, 300);
+        }
+    }
+
     startTopic(cIdx, tIdx) {
-        quiz.start(AppConfig.courseData[cIdx].topics[tIdx]);
+        const chapter = this.currentGradeData.chapters[cIdx];
+        if (chapter && chapter.topics[tIdx]) {
+            quiz.start(chapter.topics[tIdx]);
+        }
     }
 
     async startAiTopic(cIdx, tIdx) {
@@ -875,7 +997,7 @@ class App {
             step++;
         }, 1500);
 
-        const sourceTopic = AppConfig.courseData[cIdx].topics[tIdx];
+        const sourceTopic = this.currentGradeData.chapters[cIdx].topics[tIdx];
         const data = await aiGenerator.generate(sourceTopic);
 
         clearInterval(interval);
@@ -924,7 +1046,7 @@ class App {
                 <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
                 <span class="text-sm">Đang tải dữ liệu...</span>
             </div>
-        `;
+            `;
 
         const hiddenContent = document.querySelector('.hidden-accessible');
 
@@ -940,21 +1062,21 @@ class App {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors";
 
-            let icon = `<span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs">${idx + 1}</span>`;
-            if (idx === 0) icon = `<span class="w-8 h-8 rounded-full bg-amber-100 text-amber-500 flex items-center justify-center text-lg"><i class="fa-solid fa-crown"></i></span>`;
-            if (idx === 1) icon = `<span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-lg"><i class="fa-solid fa-medal"></i></span>`;
-            if (idx === 2) icon = `<span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg"><i class="fa-solid fa-medal"></i></span>`;
+            let icon = `< span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" > ${idx + 1}</span > `;
+            if (idx === 0) icon = `< span class="w-8 h-8 rounded-full bg-amber-100 text-amber-500 flex items-center justify-center text-lg" > <i class="fa-solid fa-crown"></i></span > `;
+            if (idx === 1) icon = `< span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-lg" > <i class="fa-solid fa-medal"></i></span > `;
+            if (idx === 2) icon = `< span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg" > <i class="fa-solid fa-medal"></i></span > `;
 
             row.innerHTML = `
-                <div class="flex items-center gap-3">
-                    ${icon}
-                    <div>
-                        <div class="font-bold text-slate-800">${item.name}</div>
-                        <div class="text-[10px] text-slate-400 uppercase tracking-wide truncate max-w-[120px]">${item.topic}</div>
-                    </div>
-                </div>
-                <div class="font-display font-bold text-indigo-600 text-lg">${item.score}/${item.total}</div>
-            `;
+            < div class="flex items-center gap-3" >
+                ${icon}
+        <div>
+            <div class="font-bold text-slate-800">${item.name}</div>
+            <div class="text-[10px] text-slate-400 uppercase tracking-wide truncate max-w-[120px]">${item.topic}</div>
+        </div>
+                </div >
+            <div class="font-display font-bold text-indigo-600 text-lg">${item.score}/${item.total}</div>
+        `;
             content.appendChild(row);
         });
     }
@@ -984,12 +1106,12 @@ class App {
                 const item = document.createElement('div');
                 item.className = "flex justify-between items-center p-3 rounded-xl bg-slate-50 border border-slate-100";
                 item.innerHTML = `
-                    <div>
+            < div >
                         <div class="font-bold text-sm text-slate-700">${h.topic}</div>
                         <div class="text-xs text-slate-400">${h.date} - ${Math.round((h.score / h.total) * 100)}%</div>
-                    </div>
-                    <div class="font-bold text-indigo-600">${h.score}/${h.total}</div>
-                `;
+                    </div >
+            <div class="font-bold text-indigo-600">${h.score}/${h.total}</div>
+        `;
                 list.appendChild(item);
             });
         }
@@ -1099,7 +1221,7 @@ class App {
 
         // Date
         const now = new Date();
-        document.getElementById('cert-date').textContent = `Đắk Lắk, ngày ${now.getDate()} tháng ${now.getMonth() + 1} năm ${now.getFullYear()}`;
+        document.getElementById('cert-date').textContent = `Đắk Lắk, ngày ${now.getDate()} tháng ${now.getMonth() + 1} năm ${now.getFullYear()} `;
 
         // Show certificate area
         const certArea = document.getElementById('certificate-area');
