@@ -1068,7 +1068,7 @@ class App {
             if (idx === 2) icon = `< span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg" > <i class="fa-solid fa-medal"></i></span > `;
 
             row.innerHTML = `
-            < div class="flex items-center gap-3" >
+            <div class="flex items-center gap-3" >
                 ${icon}
         <div>
             <div class="font-bold text-slate-800">${item.name}</div>
@@ -1369,3 +1369,4 @@ const app = new App();
 window.addEventListener('load', () => {
     app.init();
 });
+
