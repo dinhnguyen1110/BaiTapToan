@@ -1062,10 +1062,10 @@ class App {
             const row = document.createElement('div');
             row.className = "flex items-center justify-between p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors";
 
-            let icon = `< span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" > ${idx + 1}</span > `;
-            if (idx === 0) icon = `< span class="w-8 h-8 rounded-full bg-amber-100 text-amber-500 flex items-center justify-center text-lg" > <i class="fa-solid fa-crown"></i></span > `;
-            if (idx === 1) icon = `< span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-lg" > <i class="fa-solid fa-medal"></i></span > `;
-            if (idx === 2) icon = `< span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg" > <i class="fa-solid fa-medal"></i></span > `;
+            let icon = `<span class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" > ${idx + 1}</span > `;
+            if (idx === 0) icon = `<span class="w-8 h-8 rounded-full bg-amber-100 text-amber-500 flex items-center justify-center text-lg" > <i class="fa-solid fa-crown"></i></span > `;
+            if (idx === 1) icon = `<span class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-lg" > <i class="fa-solid fa-medal"></i></span > `;
+            if (idx === 2) icon = `<span class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-lg" > <i class="fa-solid fa-medal"></i></span > `;
 
             row.innerHTML = `
             <div class="flex items-center gap-3" >
@@ -1369,4 +1369,5 @@ const app = new App();
 window.addEventListener('load', () => {
     app.init();
 });
+
 
