@@ -912,8 +912,8 @@ class App {
                         <button onclick="app.startTopic(${cIdx}, ${tIdx})" class="flex-1 py-2 rounded-lg bg-indigo-50 text-indigo-600 font-bold text-sm hover:bg-indigo-100 transition-colors">
                             Luyện tập
                         </button>
-                        <button onclick="app.startAiTopic(${cIdx}, ${tIdx})" class="w-10 rounded-lg bg-fuchsia-50 text-fuchsia-600 flex items-center justify-center hover:bg-fuchsia-100 transition-colors" title="Tạo đề mới bằng AI">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <button onclick="app.startAiTopic(${cIdx}, ${tIdx})" class="px-3 rounded-lg bg-fuchsia-50 text-fuchsia-600 font-bold text-sm hover:bg-fuchsia-100 transition-colors flex items-center justify-center gap-2" title="Tạo đề mới bằng AI - Thử thách vô hạn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span class="hidden sm:inline">AI</span>
                         </button>
                     </div>
                 `;
